@@ -1,0 +1,14 @@
+streamlit
+langchain
+langchain-community
+langchain-ollama
+langchain-chroma
+langchain-text-splitters
+chromadb
+gitpython
+tree-sitter
+tree-sitter-python
+python-dotenv
+psycopg[binary]
+deepeval
+sentence-transformers

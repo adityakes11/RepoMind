@@ -1,0 +1,12 @@
+[
+  {"question":"How is a new expense added to the database?","expected_files":["server.py"]},
+  {"question":"How does the application validate expense dates and amounts?","expected_files":["utils.py","server.py"]},
+  {"question":"Where is the SQLite database connection created?","expected_files":["database.py"]},
+  {"question":"What tables are created when the expense database is initialized?","expected_files":["database.py"]},
+  {"question":"How are expenses listed for a date range?","expected_files":["server.py"]},
+  {"question":"How can an expense be searched by text?","expected_files":["server.py"]},
+  {"question":"How does the application calculate total spending?","expected_files":["server.py"]},
+  {"question":"How are expenses summarized by category?","expected_files":["server.py"]},
+  {"question":"What happens when the requested expense ID does not exist?","expected_files":["server.py"]},
+  {"question":"Where are the expense categories exposed to clients?","expected_files":["server.py","categories.json"]}
+]

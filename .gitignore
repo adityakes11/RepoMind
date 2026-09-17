@@ -1,0 +1,10 @@
+.env
+__pycache__/
+*.pyc
+data/repos/*
+data/chroma/*
+.venv/
+venv/
+.idea/
+.vscode/
+.deepeval/
