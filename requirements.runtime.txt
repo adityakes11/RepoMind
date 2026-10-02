@@ -1,0 +1,16 @@
+langchain
+langchain-community
+langchain-ollama
+langchain-chroma
+langchain-text-splitters
+chromadb
+gitpython
+tree-sitter
+tree-sitter-python
+python-dotenv
+psycopg[binary]
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+sse-starlette>=2.0.0
+python-multipart>=0.0.9
+langsmith>=0.3.0
