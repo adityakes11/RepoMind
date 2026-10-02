@@ -2,7 +2,7 @@
 
 The evaluation suite currently contains the active runners and the shared golden test data:
 
-- `../golden test/`: trusted evaluation cases and expected outputs
+- `../golden_tests/`: trusted evaluation cases and expected outputs
 - `eval_retriever.py`: DeepEval retriever evaluation
 - `eval_generator.py`: generator faithfulness and answer-relevance evaluation
 - `eval_rag_pipeline.py`: end-to-end RAG triad evaluation
@@ -45,7 +45,7 @@ python -m evaluations.eval_rag_pipeline --collection-name repomind_e2af1fe6fdf92
 
 This evaluates contextual relevancy, faithfulness, and answer relevancy using live retriever and generator output. Use `--all` to run all 10 golden cases.
 
-Application-level correctness evaluation uses the MCP ExpenseTracker matrix in `../golden test/correctness_goldens.json`:
+Application-level correctness evaluation uses the MCP ExpenseTracker matrix in `../golden_tests/correctness_goldens.json`:
 
 ```bash
 python -m evaluations.eval_application --collection-name repomind_e2af1fe6fdf92747 --judge-model qwen2.5:3b --limit 3
@@ -80,7 +80,7 @@ The default retriever sweep uses deterministic file-level precision and recall, 
 python -m evaluations.eval_retriever --collection-name repomind_e2af1fe6fdf92747
 ```
 
-Golden cases are stored in `../golden test/retriever_goldens.json`. The sweep evaluates contextual recall and contextual precision with `top_k=5` by default.
+Golden cases are stored in `../golden_tests/retriever_goldens.json`. The sweep evaluates contextual recall and contextual precision with `top_k=5` by default.
 Use `--semantic` to additionally run DeepEval contextual metrics with the local Ollama judge. The judge defaults to `LLM_MODEL` and `OLLAMA_BASE_URL` from `.env`; override it with `EVAL_JUDGE_MODEL` or `--judge-model`.
 
 ## Full Evaluation Suite & Regression Comparison

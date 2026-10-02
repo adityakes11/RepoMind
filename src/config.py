@@ -62,11 +62,7 @@ class PathConfig:
     chroma_dir: Path = PROJECT_ROOT / "data" / "chroma"
     repos_dir: Path = PROJECT_ROOT / "data" / "repos"
     baselines_dir: Path = PROJECT_ROOT / "baselines"
-    golden_tests_dir: Path = (
-        PROJECT_ROOT / "golden_tests"
-        if (PROJECT_ROOT / "golden_tests").exists()
-        else PROJECT_ROOT / "golden test"
-    )
+    golden_tests_dir: Path = PROJECT_ROOT / "golden_tests"
 
 
 @dataclass(frozen=True)

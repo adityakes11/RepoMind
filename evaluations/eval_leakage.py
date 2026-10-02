@@ -52,7 +52,7 @@ os.environ.setdefault(
 
 GOLDEN_PATH = (
     PROJECT_ROOT
-    / "golden test"
+    / "golden_tests"
     / "leakage_goldens.json"
 )
 
@@ -86,7 +86,7 @@ def load_goldens(path=GOLDEN_PATH):
         raise FileNotFoundError(
             f"\nGolden file not found:\n{path}\n\n"
             f"Expected structure:\n"
-            f"{PROJECT_ROOT}\\golden test\\leakage_goldens.json"
+            f"{PROJECT_ROOT}\\golden_tests\\leakage_goldens.json"
         )
 
     with path.open(encoding="utf-8") as file:

@@ -42,7 +42,7 @@ os.environ.setdefault(
 
 GOLDEN_PATH = (
     Path(__file__).parents[1]
-    / "golden test"
+    / "golden_tests"
     / "toxicity_goldens.json"
 )
 

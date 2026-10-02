@@ -104,7 +104,7 @@ os.environ.setdefault(
 
 GOLDEN_PATH = (
     PROJECT_ROOT
-    / "golden test"
+    / "golden_tests"
     / "retriever_goldens.json"
 )
 

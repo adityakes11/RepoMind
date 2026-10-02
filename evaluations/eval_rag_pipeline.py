@@ -7,7 +7,7 @@ Metrics:
     3. Answer Relevancy
 
 Golden dataset:
-    golden test/faithfulness_goldens.json
+    golden_tests/faithfulness_goldens.json
 
 CLI examples:
 
@@ -100,7 +100,7 @@ os.environ.setdefault(
 
 GOLDEN_PATH = (
     PROJECT_ROOT
-    / "golden test"
+    / "golden_tests"
     / "faithfulness_goldens.json"
 )
 

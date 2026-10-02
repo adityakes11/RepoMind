@@ -11,7 +11,7 @@
       "top_k": 3,
       "fetch_k": 10,
       "reranker": false,
-      "golden_set": "C:\\Users\\adity\\Downloads\\RepoMind_PostgreSQL_MultiThread\\RepoMind\\golden test\\retriever_goldens.json",
+      "golden_set": "C:\\Users\\adity\\Downloads\\RepoMind_PostgreSQL_MultiThread\\RepoMind\\golden_tests\\retriever_goldens.json",
       "total_queries": 10,
       "hit_rate": 1.0,
       "mean_precision": 0.95,

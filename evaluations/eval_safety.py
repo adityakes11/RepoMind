@@ -11,7 +11,7 @@ All judge-based metrics use the local Ollama model.
 
 Golden files are stored in:
 
-    golden test/
+    golden_tests/
         scope_goldens.json
         leakage_goldens.json
         toxicity_goldens.json
@@ -98,11 +98,11 @@ OLLAMA_BASE_URL = os.getenv(
 # ============================================================
 
 # IMPORTANT:
-# Your files are inside "golden test", not "goldens".
+# Golden files are stored in the shared golden_tests directory.
 
 GOLDEN_DIR = (
     PROJECT_ROOT
-    / "golden test"
+    / "golden_tests"
 )
 
 SCOPE_GOLDEN_PATH = (

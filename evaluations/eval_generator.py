@@ -48,7 +48,7 @@ from typing import Any, Dict, List, Optional, Set
 # ├── src/
 # ├── evaluations/
 # │   └── eval_faithfulness.py
-# ├── golden test/
+# ├── golden_tests/
 # │   └── faithfulness_goldens.json
 # └── ...
 
@@ -96,7 +96,7 @@ os.environ.setdefault(
 
 GOLDEN_PATH = (
     PROJECT_ROOT
-    / "golden test"
+    / "golden_tests"
     / "faithfulness_goldens.json"
 )
 

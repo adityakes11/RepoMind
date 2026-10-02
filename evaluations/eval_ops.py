@@ -83,7 +83,7 @@ QUESTIONS = [
     "How does the application create or use Chroma collections?",
     "How does repository ingestion work?",
     "How does the system handle multiple GitHub repositories?",
-    "What is the purpose of the Streamlit application?",
+    "What is the purpose of the RepoMind application?",
     "How does the application process a GitHub repository URL?",
     "What files are responsible for retrieval?",
     "What files are responsible for answer generation?",
