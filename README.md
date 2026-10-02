@@ -158,6 +158,114 @@ docker run --rm -p 5173:80 repomind-frontend
 
 For a multi-container deployment, provide a network alias named `backend`, configure the backend environment variables for PostgreSQL and Ollama, and persist `data/chroma` and `data/repos`. No Docker Compose file is included in this repository.
 
+## AWS EC2 deployment
+
+RepoMind has been deployed successfully on a single Ubuntu EC2 instance with Docker. This is the simplest deployment topology for a small demo:
+
+```text
+EC2
+|-- frontend     Nginx on port 80
+|-- backend      FastAPI on the private Docker network
+|-- postgres     PostgreSQL 16
+`-- ollama       Local CPU inference and embeddings
+```
+
+### Recommended EC2 settings
+
+- Use an Ubuntu LTS AMI.
+- Enable a public IPv4 address.
+- Allow inbound TCP `22` from **My IP** and TCP `80` from the internet.
+- Do not expose PostgreSQL `5432`, backend `8000`, or Ollama `11434` publicly.
+- Use one `gp3` root volume of at least 30 GiB and no additional file system.
+
+The free-tier `t3.micro` has only 1 GiB RAM. For that instance size, add a 2 GiB swap file and use the smaller `qwen2.5:0.5b` model. Larger repositories and the default `qwen2.5:7b` model require a larger instance and may incur AWS charges.
+
+### Prepare the server
+
+Connect to the instance, install Docker and Git, and clone the repository:
+
+```bash
+sudo apt update
+sudo apt install -y docker.io git
+sudo systemctl enable --now docker
+sudo usermod -aG docker ubuntu
+git clone https://github.com/adityakes11/RepoMind.git
+cd RepoMind
+```
+
+For a 1 GiB instance, create swap before starting the containers:
+
+```bash
+sudo fallocate -l 2G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+```
+
+Create `.env.aws` and use Docker service names for internal connections:
+
+```env
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=repomind
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=replace_with_a_strong_password
+OLLAMA_BASE_URL=http://ollama:11434
+LLM_MODEL=qwen2.5:0.5b
+EMBEDDING_MODEL=nomic-embed-text
+CHUNK_SIZE=1000
+CHUNK_OVERLAP=150
+EMBEDDING_BATCH_SIZE=4
+LANGSMITH_TRACING=false
+```
+
+Create a shared network and persistent volumes:
+
+```bash
+docker network create repomind-net
+docker volume create repomind-postgres
+docker volume create repomind-ollama
+docker volume create repomind-chroma
+docker volume create repomind-repos
+```
+
+Start PostgreSQL and Ollama:
+
+```bash
+docker run -d --name postgres --network repomind-net --restart unless-stopped \
+	-e POSTGRES_DB=repomind -e POSTGRES_USER=postgres \
+	-e POSTGRES_PASSWORD=replace_with_a_strong_password \
+	-v repomind-postgres:/var/lib/postgresql/data postgres:16
+
+docker run -d --name ollama --network repomind-net --restart unless-stopped \
+	-p 127.0.0.1:11434:11434 -v repomind-ollama:/root/.ollama ollama/ollama
+
+docker exec ollama ollama pull qwen2.5:0.5b
+docker exec ollama ollama pull nomic-embed-text
+```
+
+Build and start the application containers:
+
+```bash
+docker build -f Dockerfile.backend -t repomind-backend .
+docker build -f Dockerfile.frontend -t repomind-frontend .
+
+docker run -d --name backend --network repomind-net --restart unless-stopped \
+	--env-file .env.aws -p 127.0.0.1:8000:8000 \
+	-v repomind-chroma:/app/data/chroma \
+	-v repomind-repos:/app/data/repos repomind-backend
+
+docker run -d --name frontend --network repomind-net --restart unless-stopped \
+	-p 80:80 repomind-frontend
+```
+
+Open `http://<EC2-public-ip>`. The frontend proxies `/api` requests to the backend container. Check the deployment with `curl http://localhost:8000/api/health` and `docker ps`.
+
+The production image uses `requirements.runtime.txt`, which excludes the CUDA-heavy evaluation dependencies. Evaluation commands should run in a development environment, not inside the small production container.
+
+Stopping the EC2 instance makes the application unavailable but preserves Docker volumes. Starting it again may assign a different public IP unless an Elastic IP is configured. HTTP is suitable for a private demo only; use a domain and HTTPS before handling sensitive data.
+
 ## Testing and evaluation
 
 Run the end-to-end authenticated workflow with PostgreSQL, Ollama, and the backend running:
