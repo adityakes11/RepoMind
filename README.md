@@ -5,6 +5,40 @@ RepoMind is a local-first codebase intelligence workspace. Give it a public GitH
 
 It combines a React and Vite frontend, a FastAPI backend, PostgreSQL for accounts and conversation history, ChromaDB for code embeddings, and Ollama for local generation and embeddings.
 
+## Evaluation Results
+
+Evaluation is a first-class part of RepoMind. The project measures the RAG pipeline offline against trusted golden cases, then observes real application traces online through LangSmith and scores sampled production-style requests with a local DeepEval/Ollama judge. The checked-in snapshot below is `baselines/baseline.json`, collected on 2026-09-27 from the ExpenseTracker golden collection with `qwen2.5:7b` as the evaluation model.
+
+### Offline RAG and application evaluation
+
+Offline evaluation isolates retrieval, generation, end-to-end RAG behavior, application correctness, and safety. Averages below are calculated from the per-case scores serialized in the baseline; scores are on a 0-1 scale unless stated otherwise.
+
+| Area | Metric | Result | Cases / samples |
+| --- | --- | ---: | ---: |
+| Retrieval | Hit rate | **100%** | 10 queries |
+| Retrieval | Mean precision | **0.950** | 10 queries |
+| Retrieval | Mean recall | **0.717** | 10 queries |
+| Generation | Faithfulness | **0.800** | 5 cases |
+| Generation | Answer relevancy | **0.880** | 5 cases |
+| End-to-end RAG | Contextual relevancy | **0.411** | 3 cases |
+| End-to-end RAG | Faithfulness | **0.917** | 3 cases |
+| End-to-end RAG | Answer relevancy | **1.000** | 3 cases |
+| Application | Correctness | **0.800** | 3 cases |
+| Application | Completeness | **0.600** | 3 cases |
+| Application | Style | **0.767** | 3 cases |
+| Safety | Toxicity pass rate | **100%** | 15 cases |
+| Safety | PII protection pass rate | **80%** | 5 cases |
+
+The suite also reports protected-content leakage (**20%** pass rate across 5 cases) and scope adherence (**0%** pass rate across 21 cases). These are intentionally visible rather than hidden: the results show strong retrieval and low toxicity, while also identifying scope and protected-content handling as areas for improvement.
+
+### Online evaluation and operations
+
+Every chat request can be traced as a `RagPipeline` or `ChatStream` run. The online triad worker samples traces, extracts the question, answer, and retrieved context, and attaches faithfulness, answer relevancy, and contextual relevancy feedback to the same LangSmith run. Stable run IDs make sampling consistent across worker restarts, and existing feedback keys are not rescored.
+
+The operational baseline measured **75 requests** with **100% success**, **0% error rate**, and no retries. Median end-to-end latency was **8.22 s** (p95 **61.46 s**); median time to first token was **2.52 s**; median retrieval time was **2.18 s**. The estimated local-model cost was **$0.000199 per query** (about **$0.40/day** at the recorded volume). LangSmith feedback is live-trace data and is not serialized in `baseline.json`, so no aggregate online triad score is claimed here until a trace export is checked in.
+
+The reproducible commands for the offline suite and the online worker are documented in [evaluations/README.md](evaluations/README.md) and in the testing section below.
+
 ## What it does
 
 - Sign up and log in with an isolated user workspace.
