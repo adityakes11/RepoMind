@@ -1,6 +1,7 @@
 """Cross-encoder reranking for repository retrieval."""
 
 from sentence_transformers import CrossEncoder
+from langsmith import traceable
 
 from src.rag.vector_store import load_vector_store
 
@@ -17,6 +18,7 @@ class RerankingRetriever:
         self.fetch_k = fetch_k
         self.top_k = top_k
 
+    @traceable(run_type="chain", name="RerankingRetriever")
     def invoke(self, query):
         candidates = self.store.similarity_search(query, k=self.fetch_k)
         if not candidates:

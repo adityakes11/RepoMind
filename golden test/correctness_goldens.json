@@ -1,0 +1,62 @@
+[
+  {
+    "id": "mcp-c001",
+    "question": "How is a new expense added to the database?",
+    "ideal_answer": "The add_expense MCP tool validates the date and amount, opens a database connection, inserts the expense fields into the expenses table, commits the transaction, closes the connection, and returns a success response containing the new expense ID.",
+    "source_files": ["server.py", "utils.py", "database.py"]
+  },
+  {
+    "id": "mcp-c002",
+    "question": "How does the application validate expense dates and amounts?",
+    "ideal_answer": "validate_date parses dates using the YYYY-MM-DD format and raises ValueError for invalid dates. validate_amount converts the value to float and raises ValueError when the amount is less than or equal to zero.",
+    "source_files": ["utils.py"]
+  },
+  {
+    "id": "mcp-c003",
+    "question": "Where is the SQLite database connection created?",
+    "ideal_answer": "The get_connection function in database.py calls sqlite3.connect with the expenses.db path, which is built relative to the module directory, and sets sqlite3.Row as the connection row factory.",
+    "source_files": ["database.py"]
+  },
+  {
+    "id": "mcp-c004",
+    "question": "What tables are created when the database is initialized?",
+    "ideal_answer": "init_db creates an expenses table containing expense details and a budgets table containing month, category, and budget fields. It then commits the schema changes and closes the connection.",
+    "source_files": ["database.py"]
+  },
+  {
+    "id": "mcp-c005",
+    "question": "How does the list_expenses tool work?",
+    "ideal_answer": "list_expenses validates the start and end dates, selects expenses whose date is between those values, orders the results by date, converts rows to dictionaries, closes the connection, and returns the list.",
+    "source_files": ["server.py", "utils.py"]
+  },
+  {
+    "id": "mcp-c006",
+    "question": "How can expenses be searched by text?",
+    "ideal_answer": "search_expenses searches category, subcategory, merchant, and note using SQL LIKE conditions. It orders matches by date descending, converts rows to dictionaries, closes the connection, and returns the matches.",
+    "source_files": ["server.py"]
+  },
+  {
+    "id": "mcp-c007",
+    "question": "How does the application calculate total spending?",
+    "ideal_answer": "total_spending validates the date range and executes SELECT SUM(amount) for expenses between the dates. If the result is null it uses zero, then closes the connection and returns the total in a dictionary.",
+    "source_files": ["server.py", "utils.py"]
+  },
+  {
+    "id": "mcp-c008",
+    "question": "How are expenses summarized by category?",
+    "ideal_answer": "summarize validates the date range, groups expenses by category, calculates SUM(amount) for each category, orders totals descending, converts rows to dictionaries, and returns them.",
+    "source_files": ["server.py", "utils.py"]
+  },
+  {
+    "id": "mcp-c009",
+    "question": "What happens when an expense ID does not exist?",
+    "ideal_answer": "get_expense queries the expenses table by ID and returns an error dictionary with Expense not found when no matching row exists. Otherwise it returns the database row as a dictionary.",
+    "source_files": ["server.py"]
+  },
+  {
+    "id": "mcp-c010",
+    "question": "How are expense categories exposed to MCP clients?",
+    "ideal_answer": "The categories MCP resource reads categories.json using the category path and exposes its contents through expense://categories with the application/json MIME type.",
+    "source_files": ["server.py", "categories.json"]
+  }
+]

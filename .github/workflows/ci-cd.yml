@@ -1,0 +1,143 @@
+name: RepoMind CI/CD
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: repomind-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHON_VERSION: "3.11"
+  NODE_VERSION: "20"
+
+jobs:
+  backend:
+    name: Backend checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Install backend dependencies
+        run: python -m pip install --upgrade pip && pip install -r requirements.txt
+
+      - name: Compile Python sources
+        run: python -m compileall -q backend src evaluations tests
+
+      - name: Validate API contract
+        run: |
+          python - <<'PY'
+          from backend.main import app
+
+          methods_by_path = {}
+          for route in app.routes:
+              nested_routes = getattr(getattr(route, "original_router", None), "routes", None)
+              for candidate in nested_routes or [route]:
+                  if not getattr(candidate, "path", None):
+                      continue
+                  methods_by_path.setdefault(candidate.path, set()).update(candidate.methods or set())
+
+          required = {
+              "/": {"GET"},
+              "/api/health": {"GET"},
+              "/api/auth/signup": {"POST"},
+              "/api/auth/login": {"POST"},
+              "/api/threads": {"GET", "POST"},
+          }
+          missing = {
+              path: sorted(methods - methods_by_path.get(path, set()))
+              for path, methods in required.items()
+              if not methods.issubset(methods_by_path.get(path, set()))
+          }
+          if missing:
+              raise SystemExit(f"Missing API methods: {missing}")
+          if app.openapi_url is not None:
+              raise SystemExit("API documentation must remain disabled")
+          print(f"Validated {len(methods_by_path)} registered API paths")
+          PY
+
+  frontend:
+    name: Frontend checks
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Build frontend
+        run: npm run build
+
+  publish-images:
+    name: Publish container images
+    needs:
+      - backend
+      - frontend
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract image metadata
+        id: meta
+        run: |
+          owner="$(echo "${GITHUB_REPOSITORY_OWNER}" | tr '[:upper:]' '[:lower:]')"
+          repo="$(echo "${GITHUB_REPOSITORY#*/}" | tr '[:upper:]' '[:lower:]')"
+          echo "backend=ghcr.io/${owner}/${repo}-backend" >> "$GITHUB_OUTPUT"
+          echo "frontend=ghcr.io/${owner}/${repo}-frontend" >> "$GITHUB_OUTPUT"
+          echo "tag=${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
+
+      - name: Build and push backend image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile.backend
+          push: true
+          tags: |
+            ${{ steps.meta.outputs.backend }}:${{ steps.meta.outputs.tag }}
+            ${{ steps.meta.outputs.backend }}:latest
+
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile.frontend
+          push: true
+          tags: |
+            ${{ steps.meta.outputs.frontend }}:${{ steps.meta.outputs.tag }}
+            ${{ steps.meta.outputs.frontend }}:latest

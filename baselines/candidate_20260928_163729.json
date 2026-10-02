@@ -1,0 +1,269 @@
+{
+  "timestamp": "2026-09-28T16:37:29.168360",
+  "snapshot_type": "candidate",
+  "collection_name": "repomind_e2af1fe6fdf92747",
+  "top_k": 3,
+  "project_root": "C:\\Users\\adity\\Downloads\\RepoMind_PostgreSQL_MultiThread\\RepoMind",
+  "results": {
+    "retriever": {
+      "evaluation_type": "deterministic",
+      "collection_name": "repomind_e2af1fe6fdf92747",
+      "top_k": 3,
+      "fetch_k": 10,
+      "reranker": false,
+      "golden_set": "C:\\Users\\adity\\Downloads\\RepoMind_PostgreSQL_MultiThread\\RepoMind\\golden test\\retriever_goldens.json",
+      "total_queries": 10,
+      "hit_rate": 1.0,
+      "mean_precision": 0.95,
+      "mean_recall": 0.7166666666666666,
+      "per_query": [
+        {
+          "id": "expense-g001",
+          "query": "How is a new expense added to the database?",
+          "expected_files": [
+            "database.py",
+            "server.py",
+            "utils.py"
+          ],
+          "retrieved_files": [
+            "database.py",
+            "server.py"
+          ],
+          "relevant_files": [
+            "database.py",
+            "server.py"
+          ],
+          "hit": true,
+          "precision": 1.0,
+          "recall": 0.6666666666666666
+        },
+        {
+          "id": "expense-g002",
+          "query": "How does the application validate expense dates and amounts?",
+          "expected_files": [
+            "server.py",
+            "utils.py"
+          ],
+          "retrieved_files": [
+            "server.py"
+          ],
+          "relevant_files": [
+            "server.py"
+          ],
+          "hit": true,
+          "precision": 1.0,
+          "recall": 0.5
+        },
+        {
+          "id": "expense-g003",
+          "query": "Where is the SQLite database connection created?",
+          "expected_files": [
+            "database.py"
+          ],
+          "retrieved_files": [
+            "database.py"
+          ],
+          "relevant_files": [
+            "database.py"
+          ],
+          "hit": true,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        {
+          "id": "expense-g004",
+          "query": "What tables are created when the expense database is initialized?",
+          "expected_files": [
+            "database.py"
+          ],
+          "retrieved_files": [
+            "database.py",
+            "server.py"
+          ],
+          "relevant_files": [
+            "database.py"
+          ],
+          "hit": true,
+          "precision": 0.5,
+          "recall": 1.0
+        },
+        {
+          "id": "expense-g005",
+          "query": "How are expenses listed for a date range?",
+          "expected_files": [
+            "server.py",
+            "utils.py"
+          ],
+          "retrieved_files": [
+            "server.py"
+          ],
+          "relevant_files": [
+            "server.py"
+          ],
+          "hit": true,
+          "precision": 1.0,
+          "recall": 0.5
+        },
+        {
+          "id": "expense-g006",
+          "query": "How can an expense be searched by text?",
+          "expected_files": [
+            "server.py"
+          ],
+          "retrieved_files": [
+            "server.py"
+          ],
+          "relevant_files": [
+            "server.py"
+          ],
+          "hit": true,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        {
+          "id": "expense-g007",
+          "query": "How does the application calculate total spending?",
+          "expected_files": [
+            "server.py",
+            "utils.py"
+          ],
+          "retrieved_files": [
+            "server.py"
+          ],
+          "relevant_files": [
+            "server.py"
+          ],
+          "hit": true,
+          "precision": 1.0,
+          "recall": 0.5
+        },
+        {
+          "id": "expense-g008",
+          "query": "How are expenses summarized by category?",
+          "expected_files": [
+            "server.py",
+            "utils.py"
+          ],
+          "retrieved_files": [
+            "server.py"
+          ],
+          "relevant_files": [
+            "server.py"
+          ],
+          "hit": true,
+          "precision": 1.0,
+          "recall": 0.5
+        },
+        {
+          "id": "expense-g009",
+          "query": "What happens when the requested expense ID does not exist?",
+          "expected_files": [
+            "server.py"
+          ],
+          "retrieved_files": [
+            "server.py"
+          ],
+          "relevant_files": [
+            "server.py"
+          ],
+          "hit": true,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        {
+          "id": "expense-g010",
+          "query": "Where are the expense categories exposed to clients?",
+          "expected_files": [
+            "categories.json",
+            "server.py"
+          ],
+          "retrieved_files": [
+            "server.py"
+          ],
+          "relevant_files": [
+            "server.py"
+          ],
+          "hit": true,
+          "precision": 1.0,
+          "recall": 0.5
+        }
+      ]
+    },
+    "generator": {
+      "status": "failed",
+      "exception": "RetryError",
+      "error": "RetryError[<Future at 0x2cd5579ff40 state=finished raised TimeoutError>]"
+    },
+    "rag_pipeline": {
+      "status": "failed",
+      "exception": "RetryError",
+      "error": "RetryError[<Future at 0x2cd76aa0220 state=finished raised TimeoutError>]"
+    },
+    "application": "test_results=[TestResult(name='test_case_0', success=True, metrics_data=[MetricData(name='Correctness [GEval]', threshold=0.7, success=True, score=0.8, reason='The response accurately describes the process of adding a new expense, including validation, database interaction, and returning a success response. However, it does not mention the transaction commit, which is a minor omission compared to the expected output.', strict_mode=False, flaky=False, evaluation_model='qwen2.5:7b (Ollama)', error=None, evaluation_cost=0.0, input_tokens=0, output_tokens=0, verbose_logs='Criteria:\\nNone \\n \\nEvaluation Steps:\\n[\\n    \"Compare factual claims in the actual output with the expected output.\",\\n    \"Penalize contradictions and false claims, but do not penalize brevity or omitted details.\",\\n    \"Additional information must not lower the score unless it is false or contradictory.\"\\n] \\n \\nRubric:\\n0-4: The answer contains a clear factual error or contradiction.\\n5-8: The answer is mostly correct but contains a minor inaccuracy.\\n9-10: All stated claims are factually correct and consistent with the expected answer. \\n \\nScore: 0.8'), MetricData(name='Completeness [GEval]', threshold=0.7, success=True, score=0.8, reason='The response covers most of the key points, including the validation of date and amount, the use of an `INSERT` statement, and the retrieval of the `lastrowid`. However, it misses the explicit mention of committing the transaction and the exact structure of the returned dictionary, which are important details in the expected output.', strict_mode=False, flaky=False, evaluation_model='qwen2.5:7b (Ollama)', error=None, evaluation_cost=0.0, input_tokens=0, output_tokens=0, verbose_logs='Criteria:\\nNone \\n \\nEvaluation Steps:\\n[\\n    \"Identify the key points in the expected output.\",\\n    \"Check how many key points the actual output addresses.\",\\n    \"Judge coverage only; do not penalize an answer for a factual error because correctness is separate.\"\\n] \\n \\nRubric:\\n0-4: The answer misses several important points.\\n5-8: The answer covers the main points but misses one or more details.\\n9-10: The answer covers essentially all key points. \\n \\nScore: 0.8'), MetricData(name='Style [GEval]', threshold=0.7, success=True, score=0.7, reason='The response is clear and provides a straightforward explanation of the process. However, it could be more conversational and less formal, as it uses some technical terms without explanation. It also includes unnecessary details about the function names and source files, which are not relevant to the question.', strict_mode=False, flaky=False, evaluation_model='qwen2.5:7b (Ollama)', error=None, evaluation_cost=0.0, input_tokens=0, output_tokens=0, verbose_logs='Criteria:\\nNone \\n \\nEvaluation Steps:\\n[\\n    \"Judge only whether the answer is clear, direct, conversational, and suitable for teaching.\",\\n    \"Reward plain-language explanations and briefly explained technical terms.\",\\n    \"Do not judge factual correctness or completeness in this metric.\"\\n] \\n \\nRubric:\\n0-4: Unclear, robotic, overly stiff, or jargon-heavy.\\n5-8: Understandable but somewhat flat, formal, or list-heavy.\\n9-10: Clear, conversational, intuitive, and well explained. \\n \\nScore: 0.7')], conversational=False, index=0, multimodal=False, input='How is a new expense added to the database?', actual_output='A new expense is added to the database through the `add_expense` function. This function takes several parameters such as `date`, `amount`, `category`, and optional parameters like `subcategory`, `payment_method`, `merchant`, and `note`. Here is a detailed breakdown of the process:\\n\\n1. The `date` and `amount` are validated using the `validate_date` and `validate_amount` functions.\\n2. A database connection is established using `get_connection()`.\\n3. An SQL `INSERT` statement is executed to add the new expense into the `expenses` table. The columns include `date`, `amount`, `category`, `subcategory`, `payment_method`, `merchant`, and `note`.\\n4. After the insertion, the `lastrowid` is retrieved to get the ID of the newly added expense.\\n5. The connection is closed.\\n6. The function returns a dictionary with the status set to \"success\" and the `expense_id` of the newly added expense.\\n\\nThe relevant files and functions involved are:\\n- `server.py` with the `add_expense` function\\n- `server.py` with the `validate_date` and `validate_amount` functions\\n- `server.py` with the `get_connection` function\\n\\nSources: server.py', expected_output='The add_expense MCP tool validates the date and amount, opens a database connection, inserts the expense fields into the expenses table, commits the transaction, closes the connection, and returns a success response containing the new expense ID.', context=None, retrieval_context=None, turns=None, metadata=None), TestResult(name='test_case_1', success=False, metrics_data=[MetricData(name='Correctness [GEval]', threshold=0.7, success=True, score=0.8, reason='The response accurately describes the validation process and correctly identifies the relevant functions and files. However, it does not specify the exact validation logic for `validate_date` and `validate_amount` as stated in the expected output, which results in a minor inaccuracy.', strict_mode=False, flaky=False, evaluation_model='qwen2.5:7b (Ollama)', error=None, evaluation_cost=0.0, input_tokens=0, output_tokens=0, verbose_logs='Criteria:\\nNone \\n \\nEvaluation Steps:\\n[\\n    \"Compare factual claims in the actual output with the expected output.\",\\n    \"Penalize contradictions and false claims, but do not penalize brevity or omitted details.\",\\n    \"Additional information must not lower the score unless it is false or contradictory.\"\\n] \\n \\nRubric:\\n0-4: The answer contains a clear factual error or contradiction.\\n5-8: The answer is mostly correct but contains a minor inaccuracy.\\n9-10: All stated claims are factually correct and consistent with the expected answer. \\n \\nScore: 0.8'), MetricData(name='Completeness [GEval]', threshold=0.7, success=False, score=0.5, reason='The response covers the main points of the validation process, including the functions used and their general purpose. However, it does not specify the exact validation criteria for dates and amounts as outlined in the expected output.', strict_mode=False, flaky=False, evaluation_model='qwen2.5:7b (Ollama)', error=None, evaluation_cost=0.0, input_tokens=0, output_tokens=0, verbose_logs='Criteria:\\nNone \\n \\nEvaluation Steps:\\n[\\n    \"Identify the key points in the expected output.\",\\n    \"Check how many key points the actual output addresses.\",\\n    \"Judge coverage only; do not penalize an answer for a factual error because correctness is separate.\"\\n] \\n \\nRubric:\\n0-4: The answer misses several important points.\\n5-8: The answer covers the main points but misses one or more details.\\n9-10: The answer covers essentially all key points. \\n \\nScore: 0.5'), MetricData(name='Style [GEval]', threshold=0.7, success=True, score=0.8, reason='The response is clear and direct, explaining the validation process in a conversational manner. However, it could be more intuitive by providing a bit more context or examples of the validation criteria.', strict_mode=False, flaky=False, evaluation_model='qwen2.5:7b (Ollama)', error=None, evaluation_cost=0.0, input_tokens=0, output_tokens=0, verbose_logs='Criteria:\\nNone \\n \\nEvaluation Steps:\\n[\\n    \"Judge only whether the answer is clear, direct, conversational, and suitable for teaching.\",\\n    \"Reward plain-language explanations and briefly explained technical terms.\",\\n    \"Do not judge factual correctness or completeness in this metric.\"\\n] \\n \\nRubric:\\n0-4: Unclear, robotic, overly stiff, or jargon-heavy.\\n5-8: Understandable but somewhat flat, formal, or list-heavy.\\n9-10: Clear, conversational, intuitive, and well explained. \\n \\nScore: 0.8')], conversational=False, index=1, multimodal=False, input='How does the application validate expense dates and amounts?', actual_output='The application validates expense dates and amounts through the `validate_date` and `validate_amount` functions. These validations are called within the `add_expense` and `update_expense` functions.\\n\\nIn the `add_expense` function, the `validate_date` function is called with the `date` parameter, and the `validate_amount` function is called with the `amount` parameter to ensure they meet the required criteria before adding a new expense.\\n\\nIn the `update_expense` function, the `validate_date` function is called with the `date` parameter to ensure the date is valid before updating an existing expense.\\n\\nThe relevant files and functions are:\\n- `server.py`\\n- `validate_date` function\\n- `validate_amount` function\\n\\nSources:\\n- server.py', expected_output='validate_date parses dates using the YYYY-MM-DD format and raises ValueError for invalid dates. validate_amount converts the value to float and raises ValueError when the amount is less than or equal to zero.', context=None, retrieval_context=None, turns=None, metadata=None), TestResult(name='test_case_2', success=False, metrics_data=[MetricData(name='Correctness [GEval]', threshold=0.7, success=True, score=0.8, reason='The response correctly identifies the `get_connection` function in `database.py` as the location where the SQLite database connection is created. However, it omits details about setting the row factory and the specific path construction, which are present in the expected output. This minor inaccuracy prevents a perfect score.', strict_mode=False, flaky=False, evaluation_model='qwen2.5:7b (Ollama)', error=None, evaluation_cost=0.0, input_tokens=0, output_tokens=0, verbose_logs='Criteria:\\nNone \\n \\nEvaluation Steps:\\n[\\n    \"Compare factual claims in the actual output with the expected output.\",\\n    \"Penalize contradictions and false claims, but do not penalize brevity or omitted details.\",\\n    \"Additional information must not lower the score unless it is false or contradictory.\"\\n] \\n \\nRubric:\\n0-4: The answer contains a clear factual error or contradiction.\\n5-8: The answer is mostly correct but contains a minor inaccuracy.\\n9-10: All stated claims are factually correct and consistent with the expected answer. \\n \\nScore: 0.8'), MetricData(name='Completeness [GEval]', threshold=0.7, success=False, score=0.5, reason='The response correctly identifies the `get_connection` function in `database.py` and the path to the database, but it misses the detail about setting `sqlite3.Row` as the connection row factory, which is a key point in the expected output.', strict_mode=False, flaky=False, evaluation_model='qwen2.5:7b (Ollama)', error=None, evaluation_cost=0.0, input_tokens=0, output_tokens=0, verbose_logs='Criteria:\\nNone \\n \\nEvaluation Steps:\\n[\\n    \"Identify the key points in the expected output.\",\\n    \"Check how many key points the actual output addresses.\",\\n    \"Judge coverage only; do not penalize an answer for a factual error because correctness is separate.\"\\n] \\n \\nRubric:\\n0-4: The answer misses several important points.\\n5-8: The answer covers the main points but misses one or more details.\\n9-10: The answer covers essentially all key points. \\n \\nScore: 0.5'), MetricData(name='Style [GEval]', threshold=0.7, success=True, score=0.8, reason='The response is clear and directly addresses the question. It provides a straightforward explanation using plain language and avoids jargon, making it suitable for teaching. However, it could be slightly more conversational by using more natural phrasing.', strict_mode=False, flaky=False, evaluation_model='qwen2.5:7b (Ollama)', error=None, evaluation_cost=0.0, input_tokens=0, output_tokens=0, verbose_logs='Criteria:\\nNone \\n \\nEvaluation Steps:\\n[\\n    \"Judge only whether the answer is clear, direct, conversational, and suitable for teaching.\",\\n    \"Reward plain-language explanations and briefly explained technical terms.\",\\n    \"Do not judge factual correctness or completeness in this metric.\"\\n] \\n \\nRubric:\\n0-4: Unclear, robotic, overly stiff, or jargon-heavy.\\n5-8: Understandable but somewhat flat, formal, or list-heavy.\\n9-10: Clear, conversational, intuitive, and well explained. \\n \\nScore: 0.8')], conversational=False, index=2, multimodal=False, input='Where is the SQLite database connection created?', actual_output='The SQLite database connection is created in the `get_connection` function defined in `database.py`. This function establishes a connection to the database located at `DB_PATH`, which is defined as the path to \"expenses.db\" relative to the directory containing the `database.py` file.\\n\\nSources:\\n- database.py', expected_output='The get_connection function in database.py calls sqlite3.connect with the expenses.db path, which is built relative to the module directory, and sets sqlite3.Row as the connection row factory.', context=None, retrieval_context=None, turns=None, metadata=None)] confident_link=None test_run_id=None",
+    "safety": {
+      "scope.pass_rate": 0.0,
+      "scope.avg_score": 0.047619047619047616,
+      "scope.min_score": 0.0,
+      "scope.n": 21,
+      "leakage.protected_pass_rate": 20.0,
+      "leakage.protected_avg_score": 0.18,
+      "leakage.protected_min_score": 0.0,
+      "leakage.protected_n": 5,
+      "leakage.pii_pass_rate": 80.0,
+      "leakage.pii_avg_score": 0.9,
+      "leakage.pii_min_score": 0.5,
+      "leakage.pii_n": 5,
+      "toxicity.pass_rate": 100.0,
+      "toxicity.avg_toxicity": 1.0,
+      "toxicity.max_toxicity": 1.0,
+      "toxicity.n": 15
+    },
+    "ops": {
+      "latency.e2e_mean_ms": 14895.441621333981,
+      "latency.e2e_p50_ms": 7563.6633999529295,
+      "latency.e2e_p95_ms": 57414.287979964865,
+      "latency.e2e_p99_ms": 59971.96441398003,
+      "latency.e2e_min_ms": 3881.346400012262,
+      "latency.e2e_max_ms": 61405.30659997603,
+      "latency.ttft_mean_ms": 2641.5053959974707,
+      "latency.ttft_p50_ms": 2478.717799996957,
+      "latency.ttft_p95_ms": 3444.1929999971753,
+      "latency.ttft_p99_ms": 3820.072741993936,
+      "latency.retrieval_mean_ms": 2166.6040666649737,
+      "latency.retrieval_p50_ms": 2167.8375999908894,
+      "latency.retrieval_p95_ms": 2215.98635999253,
+      "latency.retrieval_p99_ms": 2258.046627978329,
+      "latency.generation_mean_ms": 12728.82151999666,
+      "latency.generation_p50_ms": 5382.763699977659,
+      "latency.generation_p95_ms": 55281.88852996682,
+      "latency.generation_p99_ms": 57807.29036799983,
+      "latency.avg_answer_len": 318.1333333333333,
+      "latency.successful_runs": 75,
+      "latency.failed_runs": 0,
+      "latency.slo_e2e_pass": false,
+      "latency.slo_ttft_pass": false,
+      "cost.samples": 45,
+      "cost.cost_per_query_usd": 0.00019871666666666663,
+      "cost.cost_per_query_inr": 0.017487066666666662,
+      "cost.avg_input_tokens": 1071.2666666666667,
+      "cost.avg_output_tokens": 63.37777777777778,
+      "cost.avg_cached_tokens": 0.0,
+      "cost.output_cost_share_pct": 19.136123458861025,
+      "cost.daily_usd": 0.39743333333333325,
+      "cost.monthly_usd": 11.922999999999998,
+      "cost.budget_pass": true,
+      "reliability.total_requests": 75,
+      "reliability.successful": 75,
+      "reliability.failed": 0,
+      "reliability.success_rate": 100.0,
+      "reliability.error_rate": 0.0,
+      "reliability.retry_rate": 0.0,
+      "reliability.first_attempt_success_rate": 100.0,
+      "reliability.recovered_after_retry": 0,
+      "reliability.retry_recovery_rate": 0.0,
+      "reliability.total_retry_attempts": 0,
+      "reliability.total_attempts": 75,
+      "reliability.average_attempts_per_request": 1.0
+    }
+  }
+}
