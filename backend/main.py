@@ -22,13 +22,16 @@ app = FastAPI(
     title="RepoMind API",
     version="0.1.0",
     lifespan=lifespan,
-    docs_url=None,
-    redoc_url=None,
-    openapi_url=None,
 )
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "http://localhost",
+        "http://3.25.230.158",
+        "http://3.25.230.158:80",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

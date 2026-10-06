@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: repomind-backend
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - PYTHONPATH=/app
+      # Override to reach host-level PostgreSQL and Ollama from inside container
+      - POSTGRES_HOST=host.docker.internal
+      - OLLAMA_BASE_URL=http://host.docker.internal:11434
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "8000:8000"
+    volumes:
+      - repo_data:/app/data
+    networks:
+      - repomind
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: repomind-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - repomind
+
+volumes:
+  repo_data:
+
+networks:
+  repomind:
+    driver: bridge
+
