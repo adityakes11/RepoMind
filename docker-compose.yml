@@ -1,6 +1,26 @@
 version: "3.9"
 
 services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: repomind-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: repomind
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-repomind123}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - repomind
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
   backend:
     build:
       context: .
@@ -10,8 +30,7 @@ services:
     env_file: .env
     environment:
       - PYTHONPATH=/app
-      # Override to reach host-level PostgreSQL and Ollama from inside container
-      - POSTGRES_HOST=host.docker.internal
+      - POSTGRES_HOST=postgres
       - OLLAMA_BASE_URL=http://host.docker.internal:11434
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -19,6 +38,9 @@ services:
       - "8000:8000"
     volumes:
       - repo_data:/app/data
+    depends_on:
+      postgres:
+        condition: service_healthy
     networks:
       - repomind
 
@@ -36,9 +58,9 @@ services:
       - repomind
 
 volumes:
+  pgdata:
   repo_data:
 
 networks:
   repomind:
     driver: bridge
-
